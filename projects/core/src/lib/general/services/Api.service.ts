@@ -1,6 +1,8 @@
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { SETTINGS } from '../settings';
+import { LoggerService } from '../services/Logger.service';
 
 @Injectable({
     providedIn: 'root'
@@ -45,6 +47,11 @@ export class ApiService {
     }
 
     set apiBaseUrl(apiBaseUrl: string) {
+        if (apiBaseUrl === null) {
+            this.loggerService.error('Api Service base url set to: NULL');
+        } else {
+            this.loggerService.info('Api Service base url set to: ' + apiBaseUrl);
+        }
         if (apiBaseUrl[apiBaseUrl.length - 1] === '/') {
             apiBaseUrl = apiBaseUrl.slice(0, apiBaseUrl.length);
         }
@@ -56,6 +63,9 @@ export class ApiService {
     }
 
     constructor(
-        private httpClient: HttpClient
-    ) { }
+        private httpClient: HttpClient,
+        private loggerService: LoggerService
+    ) {
+        this.apiBaseUrl = SETTINGS.apiServiceApiBaseUrl;
+    }
 }

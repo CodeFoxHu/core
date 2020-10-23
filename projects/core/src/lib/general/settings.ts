@@ -1,6 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
+import { LogLevel } from './services/Logger.service';
 import { TokenService } from './services/Token.service';
 
 interface Settings {
@@ -10,6 +11,8 @@ interface Settings {
     loggedInTokenGuardCallbackFunction: (tokenService: TokenService, router: Router) => boolean | UrlTree;
     loggedOutTokenGuardNavigationCommands: string[];
     loggedOutTokenGuardCallbackFunction: (tokenService: TokenService, router: Router) => boolean | UrlTree;
+    apiServiceApiBaseUrl: string;
+    loggerServiceLogLevel: LogLevel;
 }
 
 export let SETTINGS: Settings = {
@@ -30,5 +33,7 @@ export let SETTINGS: Settings = {
             return true;
         }
         return router.createUrlTree(SETTINGS.loggedOutTokenGuardNavigationCommands);
-    }
+    },
+    apiServiceApiBaseUrl: null,
+    loggerServiceLogLevel: LogLevel.All
 };

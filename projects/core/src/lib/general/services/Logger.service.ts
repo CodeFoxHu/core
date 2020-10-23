@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { SETTINGS } from '../settings';
 
 export enum LogLevel {
     All = 0,
@@ -15,7 +16,7 @@ export enum LogLevel {
 })
 export class LoggerService {
 
-    private _logLevel: LogLevel = LogLevel.All;
+    private _logLevel: LogLevel = null;
 
     private logLevelColors: string[] = [
         '',
@@ -66,15 +67,15 @@ export class LoggerService {
         }
     }
 
-    public setLogLevel(logLevel: LogLevel): void {
-        this.logLevel = logLevel;
-    }
-
     set logLevel(logLevel: LogLevel) {
         this._logLevel = logLevel;
     }
 
     get logLevel(): LogLevel {
         return this._logLevel;
+    }
+
+    constructor() {
+        this.logLevel = SETTINGS.loggerServiceLogLevel;
     }
 }
