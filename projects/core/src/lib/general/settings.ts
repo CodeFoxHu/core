@@ -1,7 +1,7 @@
 import { HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
 import { Router, UrlTree } from '@angular/router';
 import { Observable } from 'rxjs';
-import { LogLevel } from './services/Logger.service';
+import { LogLevel } from './enums';
 import { TokenService } from './services/Token.service';
 
 interface Settings {

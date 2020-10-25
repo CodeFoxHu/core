@@ -1,7 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../general/services/Api.service';
-import { Configuration, TableRequest, UserData, UserGroup, User, UserLoginResponse, UserEditor } from './admin.interfaces';
+import {
+    Configuration,
+    TableRequest,
+    UserData,
+    UserGroup,
+    User,
+    UserLoginResponse,
+    UserEditor,
+    Permission,
+    UserGroupEditor,
+    CustomerGroup,
+    CustomerGroupEditor
+} from './admin.interfaces';
 
 @Injectable({
     providedIn: 'root'
@@ -49,6 +61,20 @@ export class WSAApiService {
         }
     }
 
+    getUserGroup(id: number): Observable<{
+        userGroupEditor: UserGroupEditor
+    }> {
+        return this.apiService.get('usergroups/' + id);
+    }
+
+    createUserGroup(request: UserGroupEditor): Observable<{}> {
+        return this.apiService.post('usergroups', request);
+    }
+
+    updateUserGroup(id: number, request: UserGroupEditor): Observable<{}> {
+        return this.apiService.patch('usergroups/' + id, request);
+    }
+
     getUsers(request: TableRequest): Observable<{
         users: User[],
         rowCount: number
@@ -68,5 +94,36 @@ export class WSAApiService {
         userEditor: UserEditor
     }> {
         return this.apiService.get('users/' + id);
+    }
+
+    getPermissions(): Observable<{
+        permissions: Permission[]
+    }> {
+        return this.apiService.get('permissions');
+    }
+
+    getCustomerGroups(request: TableRequest): Observable<{
+        customerGroups: CustomerGroup[],
+        rowCount: number
+    }> {
+        return this.apiService.get('customergroups?request=' + JSON.stringify(request));
+    }
+
+    getCustomerGroup(id: number): Observable<{
+        customerGroupEditor: CustomerGroupEditor
+    }> {
+        return this.apiService.get('customergroups/' + id);
+    }
+
+    createCustomerGroup(request: CustomerGroupEditor): Observable<{}> {
+        return this.apiService.post('customergroups', request);
+    }
+
+    updateCustomerGroup(id: number, request: CustomerGroupEditor): Observable<{}> {
+        return this.apiService.patch('customergroups/' + id, request);
+    }
+
+    deleteCustomerGroup(id: number): Observable<{}> {
+        return this.apiService.delete('customergroups/' + id);
     }
 }

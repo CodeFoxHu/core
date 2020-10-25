@@ -5,7 +5,6 @@ export interface Configuration {
 export interface UserData {
     username: string;
     fullname: string;
-    modules: string[];
     permissions: string[];
 }
 
@@ -16,6 +15,11 @@ export interface UserLoginResponse {
 export interface UserGroup {
     id: number;
     name: string;
+}
+
+export interface UserGroupEditor {
+    name: string;
+    permissions: string[];
 }
 
 export interface TableRequest {
@@ -39,4 +43,19 @@ export interface UserEditor {
     password: string;
     active: boolean;
     userGroups: number[];
+}
+
+export interface Permission {
+    id: string;
+    name: string;
+    children: Permission[];
+}
+
+export interface CustomerGroup {
+    id: number;
+    name: string;
+}
+
+export interface CustomerGroupEditor {
+    name: string;
 }

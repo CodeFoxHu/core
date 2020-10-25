@@ -51,9 +51,9 @@ export class ApiService {
             this.loggerService.error('Api Service base url set to: NULL');
         } else {
             this.loggerService.info('Api Service base url set to: ' + apiBaseUrl);
-        }
-        if (apiBaseUrl[apiBaseUrl.length - 1] === '/') {
-            apiBaseUrl = apiBaseUrl.slice(0, apiBaseUrl.length);
+            if (apiBaseUrl[apiBaseUrl.length - 1] === '/') {
+                apiBaseUrl = apiBaseUrl.slice(0, apiBaseUrl.length);
+            }
         }
         this._apiBaseUrl = apiBaseUrl;
     }

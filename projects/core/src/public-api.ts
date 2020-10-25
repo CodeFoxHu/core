@@ -27,7 +27,7 @@ export { ApiService } from './lib/general/services/Api.service';
 export { InformationsService } from './lib/general/services/Informations.service';
 export { LoaderService } from './lib/general/services/Loader.service';
 export { LockService } from './lib/general/services/Lock.service';
-export { LoggerService, LogLevel } from './lib/general/services/Logger.service';
+export { LoggerService } from './lib/general/services/Logger.service';
 export { TokenService, TokenServiceMode } from './lib/general/services/Token.service';
 
 /* SETTINGS */
@@ -45,8 +45,12 @@ export { GeneralModule } from './lib/general/general.module';
 /* COMPONENTS */
 export { WSALoginComponent } from './lib/webshop/admin/components/login.component';
 export { WSAUserGroupsComponent } from './lib/webshop/admin/components/usergroups.component';
+export { WSAUserGroupEditorComponent } from './lib/webshop/admin/components/usergroup.editor.components';
 export { WSAUsersComponent } from './lib/webshop/admin/components/users.component';
 export { WSAUserEditorComponent } from './lib/webshop/admin/components/user.editor.component';
+export { WSACustomerGroupsComponent } from './lib/webshop/admin/components/customergroups.component';
+export { WSACustomerGroupEditorComponent } from './lib/webshop/admin/components/customergroup.editor.component';
+export { WSACustomerGroupDeleteComponent } from './lib/webshop/admin/components/customergroup.delete.component';
 
 /* INTERFACES */
 export * as WSAInterfaces from './lib/webshop/admin/admin.interfaces';

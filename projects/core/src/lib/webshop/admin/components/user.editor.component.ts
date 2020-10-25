@@ -55,23 +55,44 @@ export class WSAUserEditorComponent {
         });
     }
     fillUserEditorForm(userEditor: UserEditor): void {
-        this.userEditorFormGroup.setValue(userEditor);
+        this.userEditorFormGroup.get('username').setValue(userEditor.username);
+        this.userEditorFormGroup.get('fullname').setValue(userEditor.fullname);
+        this.userEditorFormGroup.get('password').setValue(userEditor.password);
+        this.userEditorFormGroup.get('active').setValue(userEditor.active);
+        this.userEditorFormGroup.get('userGroups').setValue(this.userGroups.filter((userGroup) => {
+            return userEditor.userGroups.indexOf(userGroup.id) !== -1;
+        }));
     }
     save(): void {
         this.loading = true;
-        const userEditor: UserEditor = this.userEditorFormGroup.value;
+        const userEditorFormValue: any = this.userEditorFormGroup.value;
         if (this.userId === null) {
-            this.wsaApiService.createUser(userEditor).subscribe(() => {
+            this.wsaApiService.createUser({
+                active: userEditorFormValue.active,
+                fullname: userEditorFormValue.fullname,
+                password: userEditorFormValue.password,
+                username: userEditorFormValue.username,
+                userGroups: userEditorFormValue.userGroups.map(userGroup => userGroup.id)
+            }).subscribe(() => {
                 this.ref.close();
             }).add(() => {
                 this.loading = false;
             });
         } else {
-            this.wsaApiService.updateUser(this.userId, userEditor).subscribe(() => {
+            this.wsaApiService.updateUser(this.userId, {
+                active: userEditorFormValue.active,
+                fullname: userEditorFormValue.fullname,
+                password: userEditorFormValue.password,
+                username: userEditorFormValue.username,
+                userGroups: userEditorFormValue.userGroups.map(userGroup => userGroup.id)
+            }).subscribe(() => {
                 this.ref.close();
             }).add(() => {
                 this.loading = false;
             });
         }
+    }
+    close(): void {
+        this.ref.close();
     }
 }
