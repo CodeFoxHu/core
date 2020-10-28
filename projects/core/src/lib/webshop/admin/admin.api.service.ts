@@ -12,7 +12,9 @@ import {
     Permission,
     UserGroupEditor,
     CustomerGroup,
-    CustomerGroupEditor
+    CustomerGroupEditor,
+    Customer,
+    CustomerEditor
 } from './admin.interfaces';
 
 @Injectable({
@@ -125,5 +127,30 @@ export class WSAApiService {
 
     deleteCustomerGroup(id: number): Observable<{}> {
         return this.apiService.delete('customergroups/' + id);
+    }
+
+    getCustomers(request: TableRequest): Observable<{
+        customers: Customer[],
+        rowCount: number
+    }> {
+        if (request === null) {
+            return this.apiService.get('customers');
+        } else {
+            return this.apiService.get('customers?request=' + JSON.stringify(request));
+        }
+    }
+
+    getCustomer(id: number): Observable<{
+        customerEditor: CustomerEditor
+    }> {
+        return this.apiService.get('customers/' + id);
+    }
+
+    createCustomer(request: CustomerEditor): Observable<{}> {
+        return this.apiService.post('customers', request);
+    }
+
+    updateCustomer(id: number, request: CustomerEditor): Observable<{}> {
+        return this.apiService.patch('customers/' + id, request);
     }
 }

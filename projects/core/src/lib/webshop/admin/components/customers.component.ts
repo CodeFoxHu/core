@@ -1,25 +1,25 @@
 import { AfterViewInit, ChangeDetectorRef, OnDestroy, ViewChild } from '@angular/core';
-import { Table } from 'primeng/table';
 import { Subject } from 'rxjs';
-import { startWith } from 'rxjs/operators';
+import { startWith, takeUntil } from 'rxjs/operators';
 import { WSAApiService } from '../admin.api.service';
-import { CustomerGroup } from '../admin.interfaces';
+import { Customer } from '../admin.interfaces';
+import { Table } from 'primeng/table';
 
-export class WSACustomerGroupsComponent implements OnDestroy, AfterViewInit {
-    customerGroups: CustomerGroup[];
+export class WSACustomersComponent implements OnDestroy, AfterViewInit {
+    customers: Customer[] = [];
     rowCount = 0;
-    loading = true;
+    loading = false;
     unsubscribe: Subject<void> = new Subject();
-    @ViewChild('customerGroupsTable') customerGroupsTable: Table = null;
+    @ViewChild('customersTable') customersTable: Table = null;
     constructor(
         private wsaApiService: WSAApiService,
         private changeDetection: ChangeDetectorRef
     ) { }
-    loadCustomerGroups(event: any): void {
+    loadCustomers(event: any): void {
         this.loading = true;
         this.changeDetection.detectChanges();
-        this.wsaApiService.getCustomerGroups(event).subscribe((rsp) => {
-            this.customerGroups = rsp.customerGroups;
+        this.wsaApiService.getCustomers(event).pipe(takeUntil(this.unsubscribe)).subscribe((rsp) => {
+            this.customers = rsp.customers;
             this.rowCount = rsp.rowCount;
             this.loading = false;
         }).add(() => {
@@ -27,13 +27,13 @@ export class WSACustomerGroupsComponent implements OnDestroy, AfterViewInit {
         });
     }
     ngAfterViewInit(): void {
-        if (this.customerGroupsTable === undefined) {
+        if (this.customersTable === undefined) {
             return;
         }
-        this.customerGroupsTable.onLazyLoad.pipe(
-            startWith(this.customerGroupsTable.createLazyLoadMetadata())
+        this.customersTable.onLazyLoad.pipe(
+            startWith(this.customersTable.createLazyLoadMetadata())
         ).subscribe((event) => {
-            this.loadCustomerGroups(event);
+            this.loadCustomers(event);
         });
     }
     ngOnDestroy(): void {

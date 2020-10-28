@@ -1,11 +1,13 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { WSAApiService } from '../admin.api.service';
 import { Permission, UserGroupEditor } from '../admin.interfaces';
 import { TreeNode } from 'primeng/api/treenode';
+import { OnDestroy } from '@angular/core';
+import { takeUntil } from 'rxjs/operators';
 
-export class WSAUserGroupEditorComponent {
+export class WSAUserGroupEditorComponent implements OnDestroy {
     userGroupId: number;
     dataLoading = false;
     loading = false;
@@ -14,6 +16,7 @@ export class WSAUserGroupEditorComponent {
     permissionTreeNodes: TreeNode[] = [];
     selectedPermissionTreeNodes: TreeNode[] = [];
     userGroupEditor: UserGroupEditor = null;
+    unsubscribe: Subject<void> = new Subject();
     constructor(
         private wsaApiService: WSAApiService,
         public ref: DynamicDialogRef,
@@ -30,7 +33,7 @@ export class WSAUserGroupEditorComponent {
         if (this.userGroupId === null) {
             combineLatest([
                 this.wsaApiService.getPermissions()
-            ]).subscribe(([getPermissionsResponse]) => {
+            ]).pipe(takeUntil(this.unsubscribe)).subscribe(([getPermissionsResponse]) => {
                 this.permissions = getPermissionsResponse.permissions;
                 this.convertPermissionsToTreeNodes(this.permissions, this.permissionTreeNodes);
             }).add(() => {
@@ -40,7 +43,7 @@ export class WSAUserGroupEditorComponent {
             combineLatest([
                 this.wsaApiService.getPermissions(),
                 this.wsaApiService.getUserGroup(this.userGroupId)
-            ]).subscribe(([getPermissionsResponse, getUserGroupResponse]) => {
+            ]).pipe(takeUntil(this.unsubscribe)).subscribe(([getPermissionsResponse, getUserGroupResponse]) => {
                 this.permissions = getPermissionsResponse.permissions;
                 this.userGroupEditor = getUserGroupResponse.userGroupEditor;
                 this.fillUserGroupEditorForm(this.userGroupEditor);
@@ -65,7 +68,7 @@ export class WSAUserGroupEditorComponent {
             this.wsaApiService.createUserGroup({
                 name: userGroupEditorFormValue.name,
                 permissions: this.selectedPermissionTreeNodes.map(permission => permission.data)
-            }).subscribe(() => {
+            }).pipe(takeUntil(this.unsubscribe)).subscribe(() => {
                 this.ref.close();
             }).add(() => {
                 this.loading = false;
@@ -74,7 +77,7 @@ export class WSAUserGroupEditorComponent {
             this.wsaApiService.updateUserGroup(this.userGroupId, {
                 name: userGroupEditorFormValue.name,
                 permissions: this.selectedPermissionTreeNodes.map(permission => permission.data)
-            }).subscribe(() => {
+            }).pipe(takeUntil(this.unsubscribe)).subscribe(() => {
                 this.ref.close();
             }).add(() => {
                 this.loading = false;
@@ -117,5 +120,9 @@ export class WSAUserGroupEditorComponent {
             }
         }
         return false;
+    }
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }

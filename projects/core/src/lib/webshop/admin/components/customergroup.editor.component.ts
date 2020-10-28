@@ -1,15 +1,19 @@
+import { OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { WSAApiService } from '../admin.api.service';
 import { CustomerGroupEditor, UserGroup } from '../admin.interfaces';
 
-export class WSACustomerGroupEditorComponent {
+export class WSACustomerGroupEditorComponent implements OnDestroy {
     customerGroupId: number = null;
     customerGroupEditor: CustomerGroupEditor = null;
     userGroups: UserGroup[] = [];
     dataLoading = false;
     loading = false;
     customerGroupEditorFormGroup: FormGroup = null;
+    unsubscribe: Subject<void> = new Subject();
     constructor(
         private wsaApiService: WSAApiService,
         public ref: DynamicDialogRef,
@@ -24,7 +28,7 @@ export class WSACustomerGroupEditorComponent {
     loadData(): void {
         if (this.customerGroupId !== null) {
             this.dataLoading = true;
-            this.wsaApiService.getCustomerGroup(this.customerGroupId).subscribe((rsp) => {
+            this.wsaApiService.getCustomerGroup(this.customerGroupId).pipe(takeUntil(this.unsubscribe)).subscribe((rsp) => {
                 this.customerGroupEditor = rsp.customerGroupEditor;
                 this.fillCustomerGroupEditorForm(this.customerGroupEditor);
             }).add(() => {
@@ -44,13 +48,15 @@ export class WSACustomerGroupEditorComponent {
         this.loading = true;
         const userEditorFormValue: any = this.customerGroupEditorFormGroup.value;
         if (this.customerGroupId === null) {
-            this.wsaApiService.createCustomerGroup(userEditorFormValue).subscribe(() => {
+            this.wsaApiService.createCustomerGroup(userEditorFormValue).pipe(takeUntil(this.unsubscribe)).subscribe(() => {
                 this.ref.close();
             }).add(() => {
                 this.loading = false;
             });
         } else {
-            this.wsaApiService.updateCustomerGroup(this.customerGroupId, userEditorFormValue).subscribe(() => {
+            this.wsaApiService.updateCustomerGroup(this.customerGroupId, userEditorFormValue).pipe(
+                takeUntil(this.unsubscribe)
+            ).subscribe(() => {
                 this.ref.close();
             }).add(() => {
                 this.loading = false;
@@ -59,5 +65,9 @@ export class WSACustomerGroupEditorComponent {
     }
     close(): void {
         this.ref.close();
+    }
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }

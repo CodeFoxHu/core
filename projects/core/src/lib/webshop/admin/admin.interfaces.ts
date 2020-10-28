@@ -59,3 +59,14 @@ export interface CustomerGroup {
 export interface CustomerGroupEditor {
     name: string;
 }
+
+export interface Customer {
+    id: number;
+    name: string;
+    companyName: string;
+}
+
+export interface CustomerEditor {
+    name: string;
+    companyName: string;
+}

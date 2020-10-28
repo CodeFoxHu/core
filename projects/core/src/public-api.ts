@@ -14,6 +14,7 @@ export * as mock from './lib/general/helpers/mock.helper';
 export * as number from './lib/general/helpers/number.helpers';
 export * as string from './lib/general/helpers/string.helper';
 export * as url from './lib/general/helpers/url.helper';
+export * as subscriptions from './lib/general/helpers/subscriptions.helper';
 
 /* INTERCEPTORS */
 export { ErrorInterceptor } from './lib/general/interceptors/Error.interceptor';
@@ -51,6 +52,7 @@ export { WSAUserEditorComponent } from './lib/webshop/admin/components/user.edit
 export { WSACustomerGroupsComponent } from './lib/webshop/admin/components/customergroups.component';
 export { WSACustomerGroupEditorComponent } from './lib/webshop/admin/components/customergroup.editor.component';
 export { WSACustomerGroupDeleteComponent } from './lib/webshop/admin/components/customergroup.delete.component';
+export { WSACustomersComponent } from './lib/webshop/admin/components/customers.component';
 
 /* INTERFACES */
 export * as WSAInterfaces from './lib/webshop/admin/admin.interfaces';

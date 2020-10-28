@@ -1,16 +1,19 @@
+import { OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { WSAApiService } from '../admin.api.service';
 import { UserEditor, UserGroup } from '../admin.interfaces';
 
-export class WSAUserEditorComponent {
+export class WSAUserEditorComponent implements OnDestroy {
     userId: number = null;
     userEditor: UserEditor = null;
     userGroups: UserGroup[] = [];
     dataLoading = false;
     loading = false;
     userEditorFormGroup: FormGroup = null;
+    unsubscribe: Subject<void> = new Subject();
     constructor(
         private wsaApiService: WSAApiService,
         public ref: DynamicDialogRef,
@@ -27,7 +30,7 @@ export class WSAUserEditorComponent {
         if (this.userId === null) {
             combineLatest([
                 this.wsaApiService.getUserGroups(null)
-            ]).subscribe(([getUserGroupsResponse]) => {
+            ]).pipe(takeUntil(this.unsubscribe)).subscribe(([getUserGroupsResponse]) => {
                 this.userGroups = getUserGroupsResponse.userGroups;
             }).add(() => {
                 this.dataLoading = false;
@@ -36,7 +39,7 @@ export class WSAUserEditorComponent {
             combineLatest([
                 this.wsaApiService.getUserGroups(null),
                 this.wsaApiService.getUser(this.userId)
-            ]).subscribe(([getUserGroupsResponse, getUserResponse]) => {
+            ]).pipe(takeUntil(this.unsubscribe)).subscribe(([getUserGroupsResponse, getUserResponse]) => {
                 this.userGroups = getUserGroupsResponse.userGroups;
                 this.userEditor = getUserResponse.userEditor;
                 this.fillUserEditorForm(this.userEditor);
@@ -73,7 +76,7 @@ export class WSAUserEditorComponent {
                 password: userEditorFormValue.password,
                 username: userEditorFormValue.username,
                 userGroups: userEditorFormValue.userGroups.map(userGroup => userGroup.id)
-            }).subscribe(() => {
+            }).pipe(takeUntil(this.unsubscribe)).subscribe(() => {
                 this.ref.close();
             }).add(() => {
                 this.loading = false;
@@ -85,7 +88,7 @@ export class WSAUserEditorComponent {
                 password: userEditorFormValue.password,
                 username: userEditorFormValue.username,
                 userGroups: userEditorFormValue.userGroups.map(userGroup => userGroup.id)
-            }).subscribe(() => {
+            }).pipe(takeUntil(this.unsubscribe)).subscribe(() => {
                 this.ref.close();
             }).add(() => {
                 this.loading = false;
@@ -94,5 +97,9 @@ export class WSAUserEditorComponent {
     }
     close(): void {
         this.ref.close();
+    }
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }
