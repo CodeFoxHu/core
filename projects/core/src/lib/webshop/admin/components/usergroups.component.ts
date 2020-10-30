@@ -11,11 +11,13 @@ export class WSAUserGroupsComponent implements OnDestroy, AfterViewInit {
     loading = false;
     unsubscribe: Subject<void> = new Subject();
     @ViewChild('userGroupsTable') userGroupsTable: Table = null;
+    event: any = null;
     constructor(
         private wsaApiService: WSAApiService,
         private changeDetection: ChangeDetectorRef
     ) { }
     loadUserGroups(event: any): void {
+        this.event = event;
         this.loading = true;
         this.changeDetection.detectChanges();
         this.wsaApiService.getUserGroups(event).pipe(takeUntil(this.unsubscribe)).subscribe((rsp) => {
@@ -25,6 +27,9 @@ export class WSAUserGroupsComponent implements OnDestroy, AfterViewInit {
         }).add(() => {
             this.changeDetection.detectChanges();
         });
+    }
+    reloadUserGroups(): void {
+        this.loadUserGroups(this.event);
     }
     ngAfterViewInit(): void {
         if (this.userGroupsTable === undefined) {

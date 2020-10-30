@@ -77,6 +77,10 @@ export class WSAApiService {
         return this.apiService.patch('usergroups/' + id, request);
     }
 
+    deleteUserGroup(id: number): Observable<{}> {
+        return this.apiService.delete('usergroups/' + id);
+    }
+
     getUsers(request: TableRequest): Observable<{
         users: User[],
         rowCount: number

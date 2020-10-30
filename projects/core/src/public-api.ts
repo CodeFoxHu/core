@@ -21,6 +21,7 @@ export { ErrorInterceptor } from './lib/general/interceptors/Error.interceptor';
 export { LoaderInterceptor } from './lib/general/interceptors/Loader.interceptor';
 export { LockInterceptor } from './lib/general/interceptors/Lock.interceptor';
 export { Mockinterceptor } from './lib/general/interceptors/Mock.interceptor';
+export { PrecheckInterceptor } from './lib/general/interceptors/Precheck.interceptor';
 export { TokenInterceptor } from './lib/general/interceptors/Token.interceptor';
 
 /* SERVICES */
