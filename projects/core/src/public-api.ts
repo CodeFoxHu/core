@@ -37,27 +37,3 @@ export { SETTINGS } from './lib/general/settings';
 
 /* MODULES */
 export { GeneralModule } from './lib/general/general.module';
-
-
-
-
-
-/********************** WEBSHOP ADMIN **********************/
-
-/* COMPONENTS */
-export { WSALoginComponent } from './lib/webshop/admin/components/login.component';
-export { WSAUserGroupsComponent } from './lib/webshop/admin/components/usergroups.component';
-export { WSAUserGroupEditorComponent } from './lib/webshop/admin/components/usergroup.editor.components';
-export { WSAUsersComponent } from './lib/webshop/admin/components/users.component';
-export { WSAUserEditorComponent } from './lib/webshop/admin/components/user.editor.component';
-export { WSACustomerGroupsComponent } from './lib/webshop/admin/components/customergroups.component';
-export { WSACustomerGroupEditorComponent } from './lib/webshop/admin/components/customergroup.editor.component';
-export { WSACustomerGroupDeleteComponent } from './lib/webshop/admin/components/customergroup.delete.component';
-export { WSACustomersComponent } from './lib/webshop/admin/components/customers.component';
-
-/* INTERFACES */
-export * as WSAInterfaces from './lib/webshop/admin/admin.interfaces';
-
-/* SERVICE */
-export { WSAApiService } from './lib/webshop/admin/admin.api.service';
-export { WSAUserService } from './lib/webshop/admin/admin.user.service';
