@@ -13,7 +13,7 @@ interface Settings {
     loggedOutTokenGuardCallbackFunction: (tokenService: TokenService, router: Router) => boolean | UrlTree;
     apiServiceApiBaseUrl: string;
     loggerServiceLogLevel: LogLevel;
-    precheckInterceptorPrecheck: boolean;
+    precheckInterceptorPrecheck: 'ERROR' | 'WARNING';
 }
 
 export let SETTINGS: Settings = {
@@ -37,5 +37,5 @@ export let SETTINGS: Settings = {
     },
     apiServiceApiBaseUrl: null,
     loggerServiceLogLevel: LogLevel.All,
-    precheckInterceptorPrecheck: false
+    precheckInterceptorPrecheck: null
 };

@@ -14,13 +14,13 @@ export class PrecheckInterceptor implements HttpInterceptor {
     this.loggerService.info('Precheck Interceptor inited');
   }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    if (SETTINGS.precheckInterceptorPrecheck) {
+    if (SETTINGS.precheckInterceptorPrecheck !== null) {
       request = request.clone({
         setHeaders: {
-          Precheck: '1'
+          Precheck: SETTINGS.precheckInterceptorPrecheck
         }
       });
-      SETTINGS.precheckInterceptorPrecheck = false;
+      SETTINGS.precheckInterceptorPrecheck = null;
     }
     return next.handle(request);
   }
