@@ -13,9 +13,18 @@ export enum TokenServiceMode {
 })
 export class TokenService {
 
+    private _cookiePath: string = null;
     private _accessToken: string = null;
     private _accessTokenKey = 'acccessToken';
     private _accessTokenCookieExpireDays = 30;
+
+    public set cookiePath(cookiePath: string) {
+        this._cookiePath = cookiePath;
+    }
+
+    public get cookiePath(): string {
+        return this._cookiePath;
+    }
 
     public set accessToken(accessToken: string) {
         this._accessToken = accessToken;
@@ -55,7 +64,7 @@ export class TokenService {
                 this.loggerService.debug('TOKEN SET TO SESSION STORAGE: ' + this._accessToken);
                 break;
             case TokenServiceMode.COOKIE:
-                this.cookieService.set(this._accessTokenKey, this._accessToken, this._accessTokenCookieExpireDays);
+                this.cookieService.set(this._accessTokenKey, this._accessToken, this._accessTokenCookieExpireDays, this._cookiePath);
                 this.loggerService.debug('TOKEN SET TO COOKIE: ' + this._accessToken);
                 break;
         }
