@@ -107,7 +107,7 @@ export class TokenService {
         this._accessToken = null;
     }
 
-    private readAccesssToken(): void {
+    readAccesssToken(): void {
         this._accessToken = this.read(null);
         if (this._accessToken !== null) {
             this.loggerService.debug('TOKEN FOUND: ' + this._accessToken);
@@ -117,8 +117,6 @@ export class TokenService {
     constructor(
         private cookieService: CookieService,
         private loggerService: LoggerService
-    ) {
-        this.readAccesssToken();
-    }
+    ) { }
 
 }

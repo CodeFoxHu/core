@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SETTINGS } from '../settings';
 import { LoggerService } from '../services/Logger.service';
@@ -17,6 +17,24 @@ export class ApiService {
 
     public get<T>(endPoint: string): Observable<any> {
         return this.httpClient.get<T>(this.generateUrl(endPoint));
+    }
+
+    public getFileArrayBuffer<T>(endPoint: string): Observable<ArrayBuffer> {
+        return this.httpClient.get(this.generateUrl(endPoint), {
+            responseType: 'arraybuffer'
+        });
+    }
+
+    public getFileText<T>(endPoint: string): Observable<string> {
+        return this.httpClient.get(this.generateUrl(endPoint), {
+            responseType: 'text'
+        });
+    }
+
+    public getWithHttpParams<T>(endPoint: string, params: HttpParams): Observable<any> {
+        return this.httpClient.get<T>(this.generateUrl(endPoint), {
+            params
+        });
     }
 
     public delete<T>(endPoint: string): Observable<any> {

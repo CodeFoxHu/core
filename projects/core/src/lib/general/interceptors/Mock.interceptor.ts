@@ -15,7 +15,7 @@ export class Mockinterceptor implements HttpInterceptor {
     }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         if (SETTINGS.mockInterceptorCallbackFunction !== null) {
-            this.loggerService.info('Mock Interceptor Callback Function Called');
+            this.loggerService.info('Mock Interceptor Callback Function Called [' + request.url + ']');
             return SETTINGS.mockInterceptorCallbackFunction(request, new URL(request.url), next);
         }
         return next.handle(request);

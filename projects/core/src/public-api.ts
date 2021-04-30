@@ -32,6 +32,9 @@ export { LockService } from './lib/general/services/Lock.service';
 export { LoggerService } from './lib/general/services/Logger.service';
 export { TokenService, TokenServiceMode } from './lib/general/services/Token.service';
 
+/* PIPE */
+export { MoneyPipe } from './lib/general/pipes/money.pipe';
+
 /* SETTINGS */
 export { SETTINGS } from './lib/general/settings';
 
