@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { LoggerService } from '../services/Logger.service';
 import { SETTINGS } from '../settings';
+import { skipInterceptor } from '../helpers/interceptors.helper';
 
 @Injectable({
     providedIn: 'root'
@@ -15,6 +16,9 @@ export class ErrorInterceptor implements HttpInterceptor {
         this.loggerService.info('Error Interceptor inited');
     }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        if (skipInterceptor('ERROR')) {
+            return next.handle(request);
+        }
         return next.handle(request).pipe(
             catchError((httpErrorResponse: HttpErrorResponse) => {
                 if (SETTINGS.errorInterceptorCallbackfunction !== null) {

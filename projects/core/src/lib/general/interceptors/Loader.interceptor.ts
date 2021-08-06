@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { LoaderService } from '../services/Loader.service';
 import { LoggerService } from '../services/Logger.service';
+import { skipInterceptor } from '../helpers/interceptors.helper';
 
 @Injectable({
     providedIn: 'root'
@@ -17,6 +18,9 @@ export class LoaderInterceptor implements HttpInterceptor {
         this.loggerService.info('Loader Interceptor inited');
     }
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        if (skipInterceptor('LOADER')) {
+            return next.handle(request);
+        }
         this.pushRequest(request);
         return next.handle(request).pipe(
             map((httpEvent: HttpEvent<any>) => {

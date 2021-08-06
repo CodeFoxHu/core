@@ -3,6 +3,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/c
 import { Observable } from 'rxjs';
 import { TokenService } from '../services/Token.service';
 import { LoggerService } from '../services/Logger.service';
+import { skipInterceptor } from '../helpers/interceptors.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,9 @@ export class TokenInterceptor implements HttpInterceptor {
     this.loggerService.info('Token Interceptor inited');
   }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (skipInterceptor('TOKEN')) {
+        return next.handle(request);
+    }
     const accessToken: string = this.tokenService.accessToken;
     if (accessToken !== null) {
       request = request.clone({

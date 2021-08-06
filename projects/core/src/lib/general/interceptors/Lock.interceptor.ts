@@ -3,6 +3,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/c
 import { Observable } from 'rxjs';
 import { LockService, SendLock } from '../services/Lock.service';
 import { LoggerService } from '../services/Logger.service';
+import { skipInterceptor } from '../helpers/interceptors.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,9 @@ export class LockInterceptor implements HttpInterceptor {
     this.loggerService.info('Lock Interceptor inited');
   }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (skipInterceptor('LOCK')) {
+        return next.handle(request);
+    }
     const sendLock: SendLock = this.lockService.sendLock;
     if (sendLock !== null) {
         request = request.clone({

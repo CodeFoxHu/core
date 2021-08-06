@@ -3,6 +3,7 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/c
 import { Observable } from 'rxjs';
 import { LoggerService } from '../services/Logger.service';
 import { SETTINGS } from '../settings';
+import { skipInterceptor } from '../helpers/interceptors.helper';
 
 @Injectable({
   providedIn: 'root'
@@ -14,6 +15,9 @@ export class PrecheckInterceptor implements HttpInterceptor {
     this.loggerService.info('Precheck Interceptor inited');
   }
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    if (skipInterceptor('PRECHECK')) {
+        return next.handle(request);
+    }
     if (SETTINGS.precheckInterceptorPrecheck !== null) {
       request = request.clone({
         setHeaders: {

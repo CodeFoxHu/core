@@ -15,6 +15,7 @@ export * as number from './lib/general/helpers/number.helpers';
 export * as string from './lib/general/helpers/string.helper';
 export * as url from './lib/general/helpers/url.helper';
 export * as subscriptions from './lib/general/helpers/subscriptions.helper';
+export * as interceptorhelpers from './lib/general/helpers/interceptors.helper';
 
 /* INTERCEPTORS */
 export { ErrorInterceptor } from './lib/general/interceptors/Error.interceptor';

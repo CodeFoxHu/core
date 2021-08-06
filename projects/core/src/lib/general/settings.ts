@@ -15,6 +15,8 @@ interface Settings {
     loggerServiceLogLevel: LogLevel;
     precheckInterceptorPrecheck: 'ERROR' | 'WARNING';
     currency: string;
+    interceptorTypes: string[],
+    skipInterceptors: string[];
 }
 
 export let SETTINGS: Settings = {
@@ -39,5 +41,7 @@ export let SETTINGS: Settings = {
     apiServiceApiBaseUrl: null,
     loggerServiceLogLevel: LogLevel.All,
     precheckInterceptorPrecheck: null,
-    currency: 'ft'
+    currency: 'ft',
+    interceptorTypes: ['ERROR', 'LOADER', 'LOCK', 'MOCK', 'TOKEN', 'PRECHECK'],
+    skipInterceptors: []
 };
