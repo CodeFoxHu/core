@@ -43,7 +43,7 @@ export class LockService {
         }
     }
 
-    public getLockresponse(): LockResponse | null {
+    public getLockResponse(): LockResponse | null {
         let lockResponse: LockResponse | null = null;
         if (this._lockResponse !== null) {
             lockResponse = {...this._lockResponse};
