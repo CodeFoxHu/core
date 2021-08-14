@@ -39,5 +39,8 @@ export { MoneyPipe } from './lib/general/pipes/money.pipe';
 /* SETTINGS */
 export { SETTINGS } from './lib/general/settings';
 
+/* INTERFACES */
+export * from './lib/general/interfaces/lock.interfaces';
+
 /* MODULES */
 export { GeneralModule } from './lib/general/general.module';

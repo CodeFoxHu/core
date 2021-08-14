@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Lock, LockAction, LockHeaders, LockService } from '../services/Lock.service';
 import { LoggerService } from '../services/Logger.service';
 import { skipInterceptor } from '../helpers/interceptors.helper';
 import { map } from 'rxjs/operators';
+import { LockService } from '../services/Lock.service';
+import { Lock, LockAction, LockHeaders } from '../interfaces/lock.interfaces';
 
 @Injectable({
   providedIn: 'root'
