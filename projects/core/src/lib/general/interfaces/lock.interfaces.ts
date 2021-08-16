@@ -17,5 +17,5 @@ export interface LockResponse {
     module: string;
     id: string;
     username: string;
-    userid: string;
+    userid: number;
 }

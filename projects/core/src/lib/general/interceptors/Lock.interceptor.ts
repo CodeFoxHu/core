@@ -36,8 +36,9 @@ export class LockInterceptor implements HttpInterceptor {
         const module: string | null = httpEvent.headers.get('Lock-Module');
         const id: string | null = httpEvent.headers.get('Lock-Id');
         const username: string | null = httpEvent.headers.get('Lock-Username');
-        const userid: string | null = httpEvent.headers.get('Lock-Userid');
-        if (action !== null && (action === LockAction.KEEP || action === LockAction.LOCK || action === LockAction.RELEASE) && module !== null && id !== null && username !== null && userid !== null) {
+        const useridString: string | null = httpEvent.headers.get('Lock-Userid');
+        const userid: number = Number(useridString);
+        if (action !== null && (action === LockAction.KEEP || action === LockAction.LOCK || action === LockAction.RELEASE) && module !== null && id !== null && username !== null && userid !== null && isFinite(userid)) {
           this.lockService.setLockResponse({action, module, id, username, userid});
         }
       }
